@@ -1,17 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Formik, Form } from 'formik';
 import css from './PasswordForm.module.css';
 import Button from '../../Button/Button';
 import Icon from '../../ComponIcon/Icon';
 import renderFormField from '../FormField/renderFormField';
-import { loginUser, registrationUser } from '../../../redux/auth/authOperation';
-import { SignUpSchema, SignInSchema } from '../../../utils/shemas';
+import {
+  emailResetUser,
+  passwordResetUser,
+} from '../../../redux/auth/authOperation';
+
 import useAuth from '../../../hooks/useAuth';
 import { DIARY_ROUTE, PROFILE_ROUTE } from '../../../utils/const';
 import useShowPassword from '../../../hooks/useShowPassword';
 import PropTypes from 'prop-types';
+import { EmailSchema, PasswordSchema } from 'utils/shemas';
+
 
 const initialValuesEmail = {
   email: '',
@@ -24,17 +29,19 @@ const initialValuesPassword = {
 const PasswordForm = ({ resetPassword, textBtn }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const { showPassword, handleClick } = useShowPassword();
 
   const { isVerify, user } = useAuth();
 
   const handleSubmitEmail = ({ email }, { resetForm }) => {
-    dispatch(registrationUser({ email }));
+    dispatch(emailResetUser({ email }));
     resetForm();
   };
 
   const handleSubmitPassword = ({ password }, { resetForm }) => {
-    dispatch(loginUser({ password }));
+    dispatch(passwordResetUser({ password, token: id }));
     resetForm();
   };
 
@@ -54,7 +61,7 @@ const PasswordForm = ({ resetPassword, textBtn }) => {
   const initialValues = resetPassword
     ? initialValuesEmail
     : initialValuesPassword;
-  const validationSchema = resetPassword ? SignUpSchema : SignInSchema;
+  const validationSchema = resetPassword ? EmailSchema : PasswordSchema;
   const handleSubmit = resetPassword ? handleSubmitEmail : handleSubmitPassword;
 
   return (
