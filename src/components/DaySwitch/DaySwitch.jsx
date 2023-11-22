@@ -1,16 +1,17 @@
-import React, { useState, useEffect, forwardRef } from "react";
-import css from "./DaySwitch.module.css";
+import React, { useState, useEffect, forwardRef } from 'react';
+import PropTypes from 'prop-types';
+import css from './DaySwitch.module.css';
 
-import DatePicker from "react-datepicker";
-import useAuth from "../../hooks/useAuth";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import useAuth from '../../hooks/useAuth';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import Icon from "../ComponIcon/Icon";
-import DatePickerStyles from "./DaySwitchCalendarStyle";
+import Icon from '../ComponIcon/Icon';
+import DatePickerStyles from './DaySwitchCalendarStyle';
 
 const CustomInput = forwardRef(
   ({ value, onClick, onChange, onKeyDown }, ref) => {
-    const handleChange = (e) => {
+    const handleChange = e => {
       onChange(e.target.value);
     };
 
@@ -20,8 +21,7 @@ const CustomInput = forwardRef(
           ref={ref}
           className={css.calendarInput}
           value={value}
-          onClick={(e) => {
-            // onClick();
+          onClick={e => {
             onClick(e);
           }}
           onChange={handleChange}
@@ -44,8 +44,8 @@ const DaySwitch = ({ handleDate }) => {
     handleDate(selectedDate);
   }, [selectedDate, handleDate]);
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Escape" && calendarOpen) {
+  const handleKeyDown = event => {
+    if (event.key === 'Escape' && calendarOpen) {
       setCalendarOpen(false);
     }
   };
@@ -67,16 +67,11 @@ const DaySwitch = ({ handleDate }) => {
     }
   };
 
-  const toggleCalendar = (e) => {
-    setCalendarOpen(!calendarOpen);
-  };
-
-  const handleCalendarChange = (date) => {
+  const handleCalendarChange = date => {
     setSelectedDate(date);
-    toggleCalendar();
   };
 
-  const currentDayClassName = (date) => {
+  const currentDayClassName = date => {
     if (date.toDateString() === new Date().toDateString()) {
       return `${css.currentDate}`;
     }
@@ -92,7 +87,7 @@ const DaySwitch = ({ handleDate }) => {
     <div>
       <style>{DatePickerStyles}</style>
       <div className={css.daySwitch}>
-        <div className={css.inputWrap} onClick={toggleCalendar}>
+        <div className={css.inputWrap} onClick={handleIconClick}>
           <DatePicker
             showYearDropdown
             scrollableYearDropdown
@@ -100,7 +95,6 @@ const DaySwitch = ({ handleDate }) => {
             dateFormat="dd/MM/yyyy"
             selected={selectedDate}
             onChange={handleCalendarChange}
-            onClickCapture={toggleCalendar}
             onKeyDown={handleKeyDown}
             minDate={userRegistrationDate}
             maxDate={new Date()}
@@ -110,28 +104,28 @@ const DaySwitch = ({ handleDate }) => {
             onClickOutside={() => setCalendarOpen(false)}
           />
           <div>
-            <Icon
-              className={css.calendarIcon}
-              iconId={"Calendar"}
-              onClick={handleIconClick}
-            />
+            <Icon className={css.calendarIcon} iconId={'Calendar'} />
           </div>
         </div>
         <div className={css.chevronIconWrap}>
           <Icon
             className={`${css.chevronIcon} ${css.chevronLeftIcon}`}
-            iconId={"Chevron"}
+            iconId={'Chevron'}
             onClick={handlePrevDay}
           />
           <Icon
             className={css.chevronIcon}
-            iconId={"Chevron"}
+            iconId={'Chevron'}
             onClick={handleNextDay}
           />
         </div>
       </div>
     </div>
   );
+};
+
+DaySwitch.propTypes = {
+  handleDate: PropTypes.func.isRequired,
 };
 
 export default DaySwitch;

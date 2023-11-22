@@ -13,14 +13,12 @@ import StatisticsInfo from '../StatisticsInfo/StatisticsInfo';
 import css from './Section.module.css';
 import { useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import useExercise from 'hooks/useExercise';
 import PropTypes from 'prop-types';
 
 const Section = ({ children }) => {
   const location = useLocation();
   const { id } = useParams();
-  const { exercisesItemsSelectFilter } = useExercise();
-  console.log('exercisesItemsSelectFilter: ', exercisesItemsSelectFilter);
+  // const { exercisesItemsSelectFilter } = useExercise();
   const showStatisticsInfoRoutes = [
     WELCOME_PAGE_ROUTE,
     SIGN_UP_ROUTE,

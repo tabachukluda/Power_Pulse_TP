@@ -1,8 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import { EXERCISES_ROUTE } from 'utils/const';
 import css from './ExercisesFilter.module.css';
 
-function ExercisesFilter({selectedCategory, setSelectedCategory, setCurrentPage}) {
+function ExercisesFilter({selectedCategory, setSelectedCategory, setCurrentPage, setPath}) {
     const categories = ["Body parts", "Equipment", "Muscles"];
 
     const categoryLiClassName = (category) =>
@@ -12,6 +12,7 @@ function ExercisesFilter({selectedCategory, setSelectedCategory, setCurrentPage}
     const handleClick = (category) => {
         if (selectedCategory !== category) {
             setCurrentPage(1)
+            setPath(EXERCISES_ROUTE)
         }
         setSelectedCategory(category);
     };
